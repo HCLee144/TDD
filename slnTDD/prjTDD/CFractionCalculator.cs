@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prjTDD
 {
@@ -21,12 +22,40 @@ namespace prjTDD
         }
         public void setFraction2(int num, int denom)
         {
-
+            Numerator2 = num;
+            Denominator2 = denom;
         }
 
         public string add()
-        { 
-            return ""; 
+        {
+            int num = Numerator1 * Denominator2 + Numerator2 * Denominator1;
+            int denom = Denominator1 * Denominator2;
+            if (denom == 0) { return "Invalid"; }
+            if (num == 0) { return "0"; }
+            reduction(ref num, ref denom);
+            return $"{num}/{denom}";
+        }
+        private void reduction(ref int num, ref int denom)
+        {
+            if (denom < 0)
+            {
+                num *= -1;
+                denom *= -1;
+            }
+            int gcd = getGcd(num, denom);
+            num /=gcd; denom /=gcd;
+        }
+        private int getGcd(int a, int b)
+        {
+            a = Math.Abs(a);
+            b = Math.Abs(b);
+            while (b != 0)
+            {
+                int t = b;
+                b = a % b;
+                a = t;
+            }
+            return a;
         }
     }
 }
